@@ -11,7 +11,10 @@ enum Status {
 }
 
 // TODO: Promise<object> | object
-type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<object>
+type Handler = (
+  req: NextApiRequest,
+  res: NextApiResponse,
+) => Promise<object | null | undefined>
 
 abstract class APIError extends Error {
   constructor(
@@ -60,7 +63,7 @@ export function json(handler: Handler): NextApiHandler {
       const data = await handler(req, res)
       res.status(200).json({
         status: Status.Success,
-        data,
+        data: data || null,
       })
 
     } catch (err) {
