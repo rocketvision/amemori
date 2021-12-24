@@ -1,0 +1,22 @@
+{
+  "name": "amemori",
+  "version": "0.0.1",
+  "description": "Rocket back-end utilities",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prepare": "npm run build",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "author": "Lord",
+  "private": true,
+  "dependencies": {
+    "next": "^12.0.7"
+  }
+}
