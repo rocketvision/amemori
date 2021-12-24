@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "description": "Rocket back-end utilities",
   "main": "index.js",
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "files": [
     "**/*.js",
-    "types/**/*.d.ts"
+    "**/*.d.ts"
   ],
   "scripts": {
     "build": "tsc",
