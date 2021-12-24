@@ -1,7 +1,7 @@
 {
   "name": "amemori",
   "version": "0.2.0",
-  "description": "Rocket back-end utilities",
+  "description": "Rocket Vision back-end utilities",
   "main": "index.js",
   "types": "index.d.ts",
   "files": [
@@ -15,8 +15,7 @@
     "version": "git add -A src",
     "postversion": "git push && git push --tags"
   },
-  "author": "Lord",
-  "private": true,
+  "author": "lord@rocketvision.com.br",
   "dependencies": {
     "next": "^12.0.7"
   }
