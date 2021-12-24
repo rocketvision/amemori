@@ -14,7 +14,7 @@ enum Status {
 type Handler = (
   req: NextApiRequest,
   res: NextApiResponse,
-) => Promise<object | null | undefined>
+) => Promise<object | null | void>
 
 abstract class APIError extends Error {
   constructor(
