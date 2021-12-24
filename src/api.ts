@@ -2,43 +2,55 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 
 // c.f. https://github.com/omniti-labs/jsend
 
+// TODO: Better class hierarchy.
+
 enum Status {
   Success = 'success',
-  BadRequest = 'failure',
-  InternalError = 'error',
+  ClientError = 'failure',
+  ServerError = 'error',
 }
 
+// TODO: Promise<object> | object
 type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<object>
 
-export class BadRequestError extends Error {
+abstract class APIError extends Error {
   constructor(
-    public data: { [field: string]: string },
-    public code: number = 400,
+    message: string,
+    public data: object,
+    public code: number,
   ) {
-    super('Bad request')
-
-    if (code < 400 || code > 499) {
-      throw new Error('Code must be between 400 and 499')
-    }
+    super(message)
 
     // TODO: Is this OK?
     this.name = this.constructor.name
   }
 }
 
-export class InternalError extends Error {
+export class ServerError extends APIError {
   constructor(
     message: string,
-    public code: number = 500,
+    data: object = {},
+    code: number = 500,
   ) {
-    super(message)
+    super(message, data, code)
 
-    if (code < 500 || code > 599) {
+    if (this.code < 500 || this.code > 599) {
       throw new Error('Code must be between 500 and 599')
     }
+  }
+}
 
-    // TODO: Is this OK?
-    this.name = this.constructor.name
+export class ClientError extends APIError {
+  constructor(
+    message: string,
+    data: object = {},
+    code: number = 400,
+  ) {
+    super(message, data, code)
+
+    if (this.code < 400 || this.code > 499) {
+      throw new Error('Code must be between 400 and 499')
+    }
   }
 }
 
@@ -53,29 +65,35 @@ export function json(handler: Handler): NextApiHandler {
 
     } catch (err) {
       // The request contained invalid data.
-      if (err instanceof BadRequestError) {
+      if (err instanceof ClientError) {
         res.status(err.code).json({
-          status: Status.BadRequest,
-          data: err.data,
-        })
-        return
-      }
-
-      // The server failed to process the request.
-      if (err instanceof InternalError) {
-        res.status(err.code).json({
-          status: Status.InternalError,
+          ...err.data,
+          status: Status.ClientError,
           message: err.message,
         })
         return
       }
 
-      let message = 'Unknown error'
+      // The error is our fault, so log it.
+      console.error(err)
+
+      // The server failed to process the request.
+      if (err instanceof ServerError) {
+        res.status(err.code).json({
+          ...err.data,
+          status: Status.ServerError,
+          message: err.message,
+        })
+        return
+      }
+
+      // Any other error is assumed to be internal.
+      let message = 'Erro desconhecido'
       if (err instanceof Error) {
         message = err.message
       }
       res.status(500).json({
-        status: 'error',
+        status: Status.ServerError,
         message,
       })
     }

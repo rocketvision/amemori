@@ -2,10 +2,11 @@
   "name": "amemori",
   "version": "0.0.1",
   "description": "Rocket back-end utilities",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "index.js",
+  "types": "types/index.d.ts",
   "files": [
-    "lib/**/*"
+    "**/*.js",
+    "types/**/*.d.ts"
   ],
   "scripts": {
     "build": "tsc",
