@@ -13,10 +13,12 @@
     "watch": "tsc -w",
     "prepare": "npm run build",
     "version": "git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "clean": "rm *.js *.d.ts"
   },
   "author": "lord@rocketvision.com.br",
   "dependencies": {
     "next": "^12.0.7"
-  }
+  },
+  "license": "GPL-3.0-or-later"
 }
