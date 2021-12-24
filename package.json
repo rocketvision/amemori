@@ -1,6 +1,6 @@
 {
   "name": "amemori",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Rocket back-end utilities",
   "main": "index.js",
   "types": "index.d.ts",
