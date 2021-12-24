@@ -40,6 +40,9 @@ export class ServerError extends APIError {
     if (this.code < 500 || this.code > 599) {
       throw new Error('Code must be between 500 and 599')
     }
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, ServerError.prototype)
   }
 }
 
@@ -54,6 +57,9 @@ export class ClientError extends APIError {
     if (this.code < 400 || this.code > 499) {
       throw new Error('Code must be between 400 and 499')
     }
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, ClientError.prototype)
   }
 }
 
