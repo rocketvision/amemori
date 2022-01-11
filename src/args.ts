@@ -57,6 +57,15 @@ export function pickAll<T>(arg: T | T[] | undefined): T[] | undefined {
 }
 
 /**
+ * Like {@link pickAll}, but return an empty array if undefined.
+ * @param arg The argument to pick.
+ * @returns An array.
+ */
+export function pickAllOrEmpty<T>(arg: T | T[] | undefined): T[] {
+  return pickAll(arg) ?? []
+}
+
+/**
  * Return an array of {@link File} from an argument that might be a
  * single element.
  * If the argument is in fact a single element (i.e. NOT an array), it
@@ -72,15 +81,27 @@ export function pickAll<T>(arg: T | T[] | undefined): T[] | undefined {
  */
 export function pickFiles(arg: File | File[] | undefined): File[] | undefined {
   if (Array.isArray(arg)) {
-    if (isEmptyFileArray(arg)) {
-      return []
-    }
     return arg
   } else {
-    return arg === undefined ? undefined : [arg]
+    if (arg === undefined) {
+      return undefined
+    }
+    if (isEmptyFile(arg)) {
+      return []
+    }
+    return [arg]
   }
 }
 
-function isEmptyFileArray(arg: File[]) {
-  return arg.length === 0 || (arg.length === 1 && arg[0].originalFilename === '')
+/**
+ * Like {@link pickFiles}, but return an empty array if undefined.
+ * @param arg The argument to pick.
+ * @returns An array.
+ */
+export function pickFilesOrEmpty(arg: File | File[] | undefined): File[] {
+  return pickFiles(arg) ?? []
+}
+
+function isEmptyFile(arg: File) {
+  return arg.originalFilename === ''
 }

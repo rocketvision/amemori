@@ -1,6 +1,6 @@
 {
   "name": "amemori",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Rocket Vision back-end utilities",
   "main": "index.js",
   "types": "index.d.ts",
