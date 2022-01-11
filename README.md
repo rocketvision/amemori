@@ -9,3 +9,4 @@ Requires [Next.js 12.0.7](https://nextjs.org/) or later.
 ## Modules
 
 - `api`: API handler wrappers to ensure response consistency.
+- `form`: "multipart/form-data" parsing and configuration.

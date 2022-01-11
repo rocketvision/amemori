@@ -10,12 +10,6 @@ enum Status {
   ServerError = 'error',
 }
 
-// TODO: Promise<object> | object
-type Handler = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => Promise<object | null | void>
-
 abstract class APIError extends Error {
   constructor(
     message: string,
@@ -29,6 +23,9 @@ abstract class APIError extends Error {
   }
 }
 
+/**
+ * An error that indicates that the server failed to process the request.
+ */
 export class ServerError extends APIError {
   constructor(
     message: string,
@@ -46,6 +43,9 @@ export class ServerError extends APIError {
   }
 }
 
+/**
+ * An error that indicates that the request was malformed.
+ */
 export class ClientError extends APIError {
   constructor(
     message: string,
@@ -63,7 +63,45 @@ export class ClientError extends APIError {
   }
 }
 
-export function json(handler: Handler): NextApiHandler {
+// TODO: Promise<object> | object
+type JSONHandler = (
+  req: NextApiRequest,
+  res: NextApiResponse,
+) => Promise<object | null | void>
+
+/**
+ * Create a handler that simplifies JSON-based APIs.
+ * 
+ * If the handler returns a value, the response will be a success, the
+ * `status` property will be `"success"` and the value will be
+ * converted to JSON and returned in the `data` property.
+ * 
+ * If the handler returns `null` or doesn't return explicitly, the
+ * response will be a success and the `data` property will be `null`.
+ * 
+ * If the handler throws an error, the response depends on the type of
+ * the error:
+ * 
+ * For {@link ClientError}, the code will be 400 (or the error object's
+ * custom code, if one was provided), the `status` property will be
+ * `"failure"` and the `message` property will contain the error
+ * message.
+ * 
+ * For {@link ServerError}, the code will be 500 (or the error object's
+ * custom code, if one was provided), the `status` property will be
+ * `"error"` and the `message` property will contain the error message.
+ * 
+ * For other errors, the code will be 500, the `status` property will
+ * be `"error"` and the `message` property will contain the error's
+ * message, if the error is an instance of {@link Error}, or a default
+ * message otherwise.
+ * 
+ * Unless the error is a {@link ClientError}, it will be logged.
+ * 
+ * @param handler The handler to wrap.
+ * @returns A Next.js API handler.
+ */
+export function json(handler: JSONHandler): NextApiHandler {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const data = await handler(req, res)
