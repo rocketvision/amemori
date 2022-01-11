@@ -1,4 +1,4 @@
-export function pickFirst<T>(arg: T | T[]): T {
+export function pickFirst<T>(arg: T | T[] | undefined): T | undefined {
   if (Array.isArray(arg)) {
     return arg[0]
   } else {
@@ -6,7 +6,7 @@ export function pickFirst<T>(arg: T | T[]): T {
   }
 }
 
-export function pickLast<T>(arg: T | T[]): T {
+export function pickLast<T>(arg: T | T[] | undefined): T | undefined {
   if (Array.isArray(arg)) {
     return arg[arg.length - 1]
   } else {
@@ -14,10 +14,10 @@ export function pickLast<T>(arg: T | T[]): T {
   }
 }
 
-export function pickAll<T>(arg: T | T[]): T[] {
+export function pickAll<T>(arg: T | T[] | undefined): T[] | undefined {
   if (Array.isArray(arg)) {
     return arg
   } else {
-    return [arg]
+    return arg === undefined ? undefined : [arg]
   }
 }
