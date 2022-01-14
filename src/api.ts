@@ -1,12 +1,10 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
-
 // c.f. https://github.com/omniti-labs/jsend
 
 // TODO: Better class hierarchy.
 
 enum Status {
   Success = 'success',
-  ClientError = 'failure',
+  ClientError = 'fail',
   ServerError = 'error',
 }
 
@@ -64,10 +62,14 @@ export class ClientError extends APIError {
 }
 
 // TODO: Promise<object> | object
-type JSONHandler = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => Promise<object | null | void>
+type JSONHandler<T, U> = (req: T, res: U) => Promise<object | null | void>
+
+type WrappedHandler<T, U> = (req: T, res: U) => Promise<void>
+
+type BasicResponse = {
+  status(code: number): BasicResponse
+  json(body: any): BasicResponse
+}
 
 /**
  * Create a handler that simplifies JSON-based APIs.
@@ -101,8 +103,12 @@ type JSONHandler = (
  * @param handler The handler to wrap.
  * @returns A Next.js API handler.
  */
-export function json(handler: JSONHandler): NextApiHandler {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+export function json<
+  T, U extends BasicResponse
+>(
+  handler: JSONHandler<T, U>,
+): WrappedHandler<T, U> {
+  return async (req: T, res: U) => {
     try {
       const data = await handler(req, res)
       res.status(200).json({

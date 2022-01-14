@@ -1,6 +1,5 @@
 import formidable from 'formidable'
 import { IncomingMessage } from 'http'
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 
 /**
  * Use as `export const config = formConfig`, otherwise Next.js will
