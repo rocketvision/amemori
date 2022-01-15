@@ -1,4 +1,5 @@
 import { DuplicateParameterError, EmptyParameterError } from './errors'
+import { Options } from './options'
 
 export class Context {
   constructor(

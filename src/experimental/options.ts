@@ -1,7 +1,7 @@
-type Options = {
+export type Options = {
   ignoreDuplicates: boolean,
 }
 
-const defaultOptions: Options = {
+export const defaultOptions: Options = {
   ignoreDuplicates: false,
 }

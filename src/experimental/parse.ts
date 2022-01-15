@@ -1,6 +1,8 @@
 import { Context } from './context'
+import { defaultOptions, Options } from './options'
 import { Parser } from './types'
 
+// TODO: fields might be undefined
 export function parseFields<
   T extends Record<string, Parser<any>>
 >(
@@ -27,3 +29,5 @@ export function parseFields<
   // Theoretically unsafe...
   return result as { [key in keyof T]: ReturnType<T[key]> }
 }
+
+// export function parseBody(req: BasicRequest) ...

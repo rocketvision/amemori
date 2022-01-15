@@ -132,3 +132,20 @@ export function array<T>(inner: Parser<T>, {
     return ctx.values.map(v => inner(ctx.withValue(v)))
   }
 }
+
+export default {
+  boolean,
+  string,
+  anyString,
+  nonEmptyString,
+  number,
+  anyNumber,
+  nonNegativeNumber,
+  decimal,
+  anyDecimal,
+  nonNegativeDecimal,
+  optional,
+  choice,
+  choiceFrom,
+  array,
+}
