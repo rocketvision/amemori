@@ -1,65 +1,6 @@
 // c.f. https://github.com/omniti-labs/jsend
 
-// TODO: Better class hierarchy.
-
-enum Status {
-  Success = 'success',
-  ClientError = 'fail',
-  ServerError = 'error',
-}
-
-abstract class APIError extends Error {
-  constructor(
-    message: string,
-    public data: object,
-    public code: number,
-  ) {
-    super(message)
-
-    // TODO: Is this OK?
-    this.name = this.constructor.name
-  }
-}
-
-/**
- * An error that indicates that the server failed to process the request.
- */
-export class ServerError extends APIError {
-  constructor(
-    message: string,
-    data: object = {},
-    code: number = 500,
-  ) {
-    super(message, data, code)
-
-    if (this.code < 500 || this.code > 599) {
-      throw new Error('Code must be between 500 and 599')
-    }
-
-    // Irritating Javascript idiosyncrasy.
-    Object.setPrototypeOf(this, ServerError.prototype)
-  }
-}
-
-/**
- * An error that indicates that the request was malformed.
- */
-export class ClientError extends APIError {
-  constructor(
-    message: string,
-    data: object = {},
-    code: number = 400,
-  ) {
-    super(message, data, code)
-
-    if (this.code < 400 || this.code > 499) {
-      throw new Error('Code must be between 400 and 499')
-    }
-
-    // Irritating Javascript idiosyncrasy.
-    Object.setPrototypeOf(this, ClientError.prototype)
-  }
-}
+import { ClientError, ServerError, Status } from './errors'
 
 // TODO: Promise<object> | object
 type JSONHandler<T, U> = (req: T, res: U) => Promise<object | null | void>
@@ -119,11 +60,7 @@ export function json<
     } catch (err) {
       // The request contained invalid data.
       if (err instanceof ClientError) {
-        res.status(err.code).json({
-          ...err.data,
-          status: Status.ClientError,
-          message: err.message,
-        })
+        res.status(err.code).json(err.json())
         return
       }
 
@@ -132,11 +69,7 @@ export function json<
 
       // The server failed to process the request.
       if (err instanceof ServerError) {
-        res.status(err.code).json({
-          ...err.data,
-          status: Status.ServerError,
-          message: err.message,
-        })
+        res.status(err.code).json(err.json())
         return
       }
 
