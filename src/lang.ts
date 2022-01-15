@@ -14,8 +14,8 @@ export const english: Lang = {
   internalServerError: 'Internal server error',
   missingParameter: 'Missing parameter: {name}',
   duplicateParameter: 'Duplicate parameter: {name}',
-  invalidChoice: 'Invalid parameter value: {name} = {value}',
-  invalidParameter: 'Invalid parameter value: {name} = {value}',
+  invalidChoice: 'Invalid parameter value: {name} = "{value}"',
+  invalidParameter: 'Invalid parameter value: {name} = "{value}"',
 }
 
 export const portuguese: Lang = {

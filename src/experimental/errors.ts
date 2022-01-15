@@ -2,8 +2,13 @@ import { ClientError } from '../errors'
 import { lang } from '../lang'
 
 export abstract class ParameterError extends ClientError {
-  constructor(message: string) {
-    super(message)
+  constructor(
+    message: string,
+    data: object = {},
+  ) {
+    super(message, data)
+
+    // Irritating Javascript idiosyncrasy.
     Object.setPrototypeOf(this, new.target.prototype)
   }
 }
@@ -13,7 +18,13 @@ export class EmptyParameterError extends ParameterError {
     readonly name: string,
   ) {
     super(lang.missingParameter
-      .replace('{name}', name))
+      .replace('{name}', name),
+      {
+        name,
+      })
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 }
 
@@ -22,7 +33,13 @@ export class DuplicateParameterError extends ParameterError {
     readonly name: string,
   ) {
     super(lang.duplicateParameter
-      .replace('{name}', name))
+      .replace('{name}', name),
+      {
+        name,
+      })
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 }
 
@@ -33,7 +50,14 @@ export class InvalidChoiceError extends ParameterError {
   ) {
     super(lang.invalidChoice
       .replace('{name}', name)
-      .replace('{value}', value))
+      .replace('{value}', value),
+      {
+        name,
+        value,
+      })
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 }
 
@@ -44,6 +68,13 @@ export class InvalidParameterError extends ParameterError {
   ) {
     super(lang.invalidParameter
       .replace('{name}', name)
-      .replace('{value}', value))
+      .replace('{value}', value),
+      {
+        name,
+        value,
+      })
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 }

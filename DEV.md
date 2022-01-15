@@ -18,3 +18,4 @@ I don't really like this, but what can I do?
 # TODO
 
 [ ] Parser: `conditional` or `filter` with custom accept/reject function.
+[ ] Conditional CORS mechanism. `cors: 'conditional'` then `ctx.allowOrigin()`.

@@ -17,8 +17,8 @@ abstract class APIError extends Error {
   ) {
     super(message)
 
-    // TODO: Is this OK?
-    this.name = this.constructor.name
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 
   abstract json(): ResponseJSON
@@ -40,7 +40,7 @@ export class ServerError extends APIError {
     }
 
     // Irritating Javascript idiosyncrasy.
-    Object.setPrototypeOf(this, ServerError.prototype)
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 
   json(): ResponseJSON {
@@ -68,7 +68,7 @@ export class ClientError extends APIError {
     }
 
     // Irritating Javascript idiosyncrasy.
-    Object.setPrototypeOf(this, ClientError.prototype)
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 
   json(): ResponseJSON {
@@ -83,5 +83,8 @@ export class ClientError extends APIError {
 export class CORSError extends ClientError {
   constructor() {
     super(lang.corsError, {}, clientErrorCodes.Forbidden)  // TODO
+
+    // Irritating Javascript idiosyncrasy.
+    Object.setPrototypeOf(this, new.target.prototype)
   }
 }
