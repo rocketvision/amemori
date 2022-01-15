@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *Unfortunately, changes before 0.5.0 were **not** documented.*
 
+## [0.5.1] - 2022-01-15
+
+### Added
+- Module `experimental`, with sub-modules `endpoint`, `parse`/`type`, among others.
+- Minimalistic localization support (WIP).
+- Development log.
+
 ## [0.5.0] - 2022-01-14
 
 ### Added
