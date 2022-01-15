@@ -94,10 +94,29 @@ export const anyDecimal = decimal({})
 
 export const nonNegativeDecimal = decimal({ min: 0 })
 
+export function exactly(value: string): Parser<void> {
+  return (ctx: Context) => {
+    ctx.rejectEmptyOrDuplicate()
+
+    if (ctx.lastValue !== value) {
+      throw new InvalidChoiceError(ctx.name, ctx.lastValue, [value])
+    }
+  }
+}
+
 export function optional<T>(inner: Parser<T>): Parser<T | undefined> {
   return (ctx) => {
     if (ctx.values.length === 0) {
       return undefined
+    }
+    return inner(ctx)
+  }
+}
+
+export function withDefault<T>(inner: Parser<T>, defaultValue: T): Parser<T> {
+  return (ctx) => {
+    if (ctx.values.length === 0) {
+      return defaultValue
     }
     return inner(ctx)
   }
@@ -154,7 +173,9 @@ export default {
   decimal,
   anyDecimal,
   nonNegativeDecimal,
+  exactly,
   optional,
+  withDefault,
   choice,
   choiceFrom,
   array,
