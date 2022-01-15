@@ -31,5 +31,12 @@ export const portuguese: Lang = {
 export let lang = english
 
 export function setLang(newLang: Lang) {
-  newLang = newLang
+  lang = newLang
+}
+
+export default {
+  lang,
+  setLang,
+  english,
+  portuguese,
 }
