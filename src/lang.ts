@@ -10,22 +10,22 @@ type Lang = {
 
 export const english: Lang = {
   methodNotAllowed: 'Method not allowed',
-  corsError: 'CORS',  // TODO
+  corsError: 'CORS error',  // TODO
   internalServerError: 'Internal server error',
-  missingParameter: 'Missing parameter: {name}',
-  duplicateParameter: 'Duplicate parameter: {name}',
-  invalidChoice: 'Invalid parameter value: {name} = "{value}"',
-  invalidParameter: 'Invalid parameter value: {name} = "{value}"',
+  missingParameter: 'Missing parameter',
+  duplicateParameter: 'Duplicate parameter',
+  invalidChoice: 'Invalid parameter value',
+  invalidParameter: 'Invalid parameter value',
 }
 
 export const portuguese: Lang = {
   methodNotAllowed: 'Método não permitido',
-  corsError: 'CORS',  // TODO
+  corsError: 'Erro de CORS',  // TODO
   internalServerError: 'Erro interno do servidor',
-  missingParameter: 'Parâmetro faltando: {name}',
-  duplicateParameter: 'Parâmetro duplicado: {name}',
-  invalidChoice: 'Parâmetro inválido: {name} = {value}',
-  invalidParameter: 'Parâmetro inválido: {name} = {value}',
+  missingParameter: 'Parâmetro faltando',
+  duplicateParameter: 'Parâmetro duplicado',
+  invalidChoice: 'Parâmetro inválido',
+  invalidParameter: 'Parâmetro inválido',
 }
 
 export let lang = english

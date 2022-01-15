@@ -1,5 +1,5 @@
 import { Context } from './context'
-import { EmptyParameterError, InvalidChoiceError, InvalidParameterError } from './errors'
+import { InvalidChoiceError, InvalidParameterError } from './errors'
 
 export type Parser<T> = (ctx: Context) => T
 
@@ -11,7 +11,9 @@ export function boolean(ctx: Context): boolean {
   if (['false', '0'].includes(ctx.lastValue)) {
     return false
   }
-  throw new InvalidChoiceError(ctx.name, ctx.lastValue)
+  throw new InvalidChoiceError(ctx.name, ctx.lastValue, [
+    'true', 'false', '1', '0',
+  ])
 }
 
 export function string({
@@ -105,7 +107,7 @@ export function choice(...choices: string[]): Parser<string> {
   return (ctx: Context) => {
     ctx.rejectEmptyOrDuplicate()
     if (!choices.includes(ctx.lastValue)) {
-      throw new InvalidChoiceError(ctx.name, ctx.lastValue)
+      throw new InvalidChoiceError(ctx.name, ctx.lastValue, choices)
     }
     return ctx.lastValue
   }
@@ -132,6 +134,14 @@ export function array<T>(inner: Parser<T>, {
     return ctx.values.map(v => inner(ctx.withValue(v)))
   }
 }
+
+// export function count(ctx: Context): number {
+//   return ctx.values.length
+// }
+
+// export function flag(ctx: Context): boolean {
+//   return ctx.values.length > 0
+// }
 
 export default {
   boolean,

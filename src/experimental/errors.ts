@@ -17,11 +17,9 @@ export class EmptyParameterError extends ParameterError {
   constructor(
     readonly name: string,
   ) {
-    super(lang.missingParameter
-      .replace('{name}', name),
-      {
-        name,
-      })
+    super(lang.missingParameter, {
+      parameter: name,
+    })
 
     // Irritating Javascript idiosyncrasy.
     Object.setPrototypeOf(this, new.target.prototype)
@@ -32,11 +30,9 @@ export class DuplicateParameterError extends ParameterError {
   constructor(
     readonly name: string,
   ) {
-    super(lang.duplicateParameter
-      .replace('{name}', name),
-      {
-        name,
-      })
+    super(lang.duplicateParameter, {
+      parameter: name,
+    })
 
     // Irritating Javascript idiosyncrasy.
     Object.setPrototypeOf(this, new.target.prototype)
@@ -47,14 +43,13 @@ export class InvalidChoiceError extends ParameterError {
   constructor(
     readonly name: string,
     readonly value: string,
+    readonly choices: string[],
   ) {
-    super(lang.invalidChoice
-      .replace('{name}', name)
-      .replace('{value}', value),
-      {
-        name,
-        value,
-      })
+    super(lang.invalidChoice, {
+      parameter: name,
+      choices,
+      value,
+    })
 
     // Irritating Javascript idiosyncrasy.
     Object.setPrototypeOf(this, new.target.prototype)
@@ -66,13 +61,10 @@ export class InvalidParameterError extends ParameterError {
     readonly name: string,
     readonly value: string,
   ) {
-    super(lang.invalidParameter
-      .replace('{name}', name)
-      .replace('{value}', value),
-      {
-        name,
-        value,
-      })
+    super(lang.invalidParameter, {
+      parameter: name,
+      value,
+    })
 
     // Irritating Javascript idiosyncrasy.
     Object.setPrototypeOf(this, new.target.prototype)
